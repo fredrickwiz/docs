@@ -1,0 +1,68 @@
+---
+title: "Setting up UFW ports"
+description: "Setting up Uncomplicated Firewall (UFW) ports involves defining rules to 
+allow or deny network traffic on specific ports or services."
+---
+
+Check UFW status. Verify if UFW is active
+```bash
+sudo ufw status
+```
+
+Enable UFW: If inactive, enable the Firewall
+```bash
+sudo ufw enable
+```
+<Warning>
+Enabling UFW before allowing essential 
+services like SSH can lock you out of your server.
+</Warning>
+1. Change the default SSH port to be 7885
+Open sshd_config using nano or the text editor of your choice 
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+2. Locate the line that specifies the port, which is typically port 22. Uncomment
+this line by removing the `#` symbol if it's present; and then change `22` to your desired
+port numver `7885`
+```text
+port 2222
+```
+
+3. Save the changes to the file and exit the text editor i.e `Ctrl + X`, then `Y` to confirm saving, and `Enter` to write the file.
+
+4. Proceed to allow the newly set port (replace `7885` with your port number of choice)
+```bash
+sudo ufw allow 7885
+```
+
+5. You may also want to delete the rule allowing the old port (if it exists)
+```bash
+sudo ufw delete allow 22
+```
+
+6. For the changes to take effect, restart the SSH service
+```bash
+sudo systemctl restart ssh
+```
+So the next time you will be loggin in to the system via SSH, you will use port `7885` instead of `22`.
+
+7. Proceed to add the following rules to your UFW table
+```bash
+# This is for our Postgresql database that we'll set up later
+sudo ufw allow 5433
+
+# This is for allowing only SSL connections to access our system
+sudo ufw allow 443
+
+# This is for our API service that we'll set up later
+sudo ufw allow 5000
+
+# This is for enabling Nginx in HTTPS mod
+sudo ufw allow 'Nginx HTTPS'
+
+# We'll enable Port 80 for now, but we'll remove it later
+sudo ufw allow 80
+```

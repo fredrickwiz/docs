@@ -1,0 +1,83 @@
+## Enable CIS Compliance within your Ubuntu Virtual Machines
+Ubuntu contains native tooling to automate compliance and auditing with the Center for Internet Security (CIS) benchmarks.
+As these documents contain a large number of hardening rules, compliance and auditing can be very efficient when using the Ubuntu native tooling that is available in Ubuntu Pro.
+We will use the Ubuntu Security Guide (USG) an easy to use tool for compliance and auditing that replaces our older tooling.
+
+Depending on your version of Ubuntu installed in the VM, you can visit this official page for the respective instructions.
+The following instructions assume you are using `Ubuntu 20.04 LTS` or `22.04 LTS`
+
+### Step 1: Installation of Ubuntu Security Guide
+```bash
+sudo apt update
+sudo apt install ubuntu-advantage-tools
+```
+
+### Step 2: Set up the Ubuntu Security Guide
+```bash
+sudo pro enable usg
+sudo apt install usg
+```
+
+### Step 3: Applying the CIS rules to the system
+Modifying a system to comply with the CIS benchmark with USG is as simple as the following command:
+```bash
+sudo usg fix <PROFILE-NAME>
+```
+Where `profile` is one of the following:
+
+| PROFILE NAME              | CORRESPONDING CIS PROFILE             |
+| ------------------------- | ------------------------------------- |
+| cis_level_1_workstation   | Level 1 Workstation profile           |
+| cis_level1_server         | Level 1 Server profile                |
+| cis_level2_workstation    | Level 2 Workstation profile           |
+| cis_level2_server         | Level 2 Server profile                |
+
+After applying the command, the system is modified to comply with the provided profile
+
+### Step 4. Applying the CIS rules to a set of systems
+It is not always practical to install the Ubuntu Security Guide to the systems that need to comply. For 
+these systems you can generate a bash script that will apply the necessary changes. The following command 
+generates that script.
+```bash
+sudo usg generate-fix <PROFILE-NAME> --output fix.sh
+```
+
+### Step 5: Customizing the CIS profile
+Compliance with a benchmark is not an all-or-nothing task. Each environment is different and options that are 
+considered as niche in one place can be essential in another. As such, USG allows to tailor the profile and remove 
+unnecessary rules, as well as customize the rules that have multiple options available.
+
+#### Setting variables
+You can customize a profile using a `tailoring file`, as demonstrated below.
+1. Generate a tailoring file.
+```bash
+sudo usg generate-tailoring cis_level2_server tailor.xml
+```
+
+2. Edit the tailoring file and go through the rules shown as comments. For example to update the threshold on \
+lockouts for failed password attempts:
+```xml
+<!--5.4.2 Ensure lockout for failed password attempts is configured (Automated)-->
+    <set-value idref="xccdf_org.ssgproject.content_value_var_accounts_passwords_pam_faillock_deny">4</set-value>
+```
+And replace the value 4 with the number of your choosing
+
+3. Audit using the tailoring file with modifications. Or provide a tailoring file with your own customizations.
+```bash
+usg audit --tailoring-file your-modified-tailor-file.xml
+```
+
+4. Fix using the modified tailoring file.
+```bash
+usg fix --tailoring-file your-modified-tailor-file.xml
+```
+
+In case you want to disable/remove rules, visit the [official page](https://ubuntu.com/security/certifications/docs/usg/cis/customization) for more info.
+
+
+
+
+### Referrence: 
+1. [Ubuntu Pro official page](https://ubuntu.com/pro)
+2. [Official Livepatch Documentation](https://ubuntu.com/security/livepatch/docs/livepatch) 
+3. [CIS compliance with Ubuntu LTS](https://ubuntu.com/security/certifications/docs/usg/cis)

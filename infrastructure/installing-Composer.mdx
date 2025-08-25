@@ -1,0 +1,29 @@
+## Install Composer
+### Step 1: Composer requires PHP and certain extensions.
+```bash
+sudo apt install php-cli php-zip unzip curl
+```
+
+### Step 2: Download the composer installer
+```bash
+cd ~ && curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+```
+<Note>
+You'll need to retry the above command as `root` in case you `ls` the `/tmp` directory and you fail to find the `composer-setup.php` file
+</Note>
+
+### Step 3: Fetch the latest installer signature and compare it with the downloaded file's hash to ensure the installer is not corrupted:
+```bash
+HASH=`curl -sS https://composer.github.io/installer.sig`
+php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+```
+
+### Step 4: Install Composer as a system-wide command, making it accessible from any directory:
+```bash
+sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+```
+
+### Step 5: Verify the installation
+```bash
+composer --version
+```

@@ -1,0 +1,156 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "WizGlobal Official Internal Documentation",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Home",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "UnitMaster",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "unitmaster/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Client Portal",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "client-portal/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Docs",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "api/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Infrastructure",
+        "groups": [
+          {
+            "group": "Setting up a virtual machine",
+            "pages": [
+              "infrastructure/introduction"
+            ]
+          },
+          {
+            "group": "Hardening Virtual Machines",
+            "pages": [
+              "infrastructure/hardening-virtual-machines",
+              "infrastructure/enabling-Livepatch",
+              "infrastructure/enabling-CIS-Compliance"
+            ]
+          },
+          {
+            "group": "Configuring firewall rules",
+            "pages": [
+              "infrastructure/setting-up-ufw-ports"
+            ]
+          },
+          {
+            "group": "Installing System-wide Dependencies",
+            "pages": [
+              "infrastructure/setting-up-PostgreSQL",
+              "infrastructure/setting-up-Nginx",
+              "infrastructure/setting-up-Docker",
+              "infrastructure/installing-PHP",
+              "infrastructure/installing-Composer"
+            ]
+          },
+          {
+            "group": "Project Implementation",
+            "pages": [
+              "infrastructure/configuring-the-database",
+              "infrastructure/setting-up-UnitMaster"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentation",
+          "href": "https://mintlify.com/docs",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://mintlify.com/community",
+          "icon": "slack"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://mintlify.com/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:hi@mintlify.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://dashboard.mintlify.com"
+    }
+  },
+  "contextual": {
+    "options": [
+     "copy",
+     "view",
+     "chatgpt",
+     "claude",
+     "perplexity",
+     "mcp",
+     "cursor",
+     "vscode"
+   ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/mintlify",
+      "github": "https://github.com/mintlify",
+      "linkedin": "https://linkedin.com/company/mintlify"
+    }
+  }
+}

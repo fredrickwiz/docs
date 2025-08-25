@@ -1,0 +1,46 @@
+---
+title: "Introduction"
+description: "Welcome to the Infrastructure documentation"
+---
+
+## Setting up
+Get your virtual machine up and running in minutes
+
+### Step 1: Create a new (non-root) user
+Once you've logged into your VM. You need to create another user other than the already existing 
+root. In the terminal, use the following commands to do so:
+
+```bash
+sudo adduser [username]
+```
+
+You will be prompted to set a password for the new user and provide optional information such as 
+full name and contact details
+Once the information is entered and confirmed, the new user account will be created with its own home directory.
+
+
+### Step 2: Block the `root` user from being able to log in using SSH
+This is for security purposes in our production environment
+1. Open the file `/etc/ssh/sshd_config` using nano or vim
+2. Find the section in the file containing the line `#PermitRootLogin yes` in it.
+3. Uncomment and change it to `PermitRootLogin no`
+4. Save the file and exit
+5. Restart the sshd service:
+```bash
+# Restarting the sshd service
+/etc/init.d/sshd restart
+systemctl restart sshd
+service sshd restart
+```
+From now on, any attempt to SSH into the server using the `root` user's credentials will automatically be denied
+
+
+### Step 3: Update & Upgrade the system
+Update and upgrade the system packages
+```bash
+# Update the system packages
+sudo apt update
+
+# Upgrade the system packages
+sudo apt upgrade
+```
