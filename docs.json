@@ -107,7 +107,7 @@
           {
             "group": "SSL Configurations - Project Level",
             "pages": [
-              "infrastructure/ssl-configurations-project"
+              "infrastructure/SSL-configurations-project"
             ]
           }
         ]
