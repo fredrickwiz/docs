@@ -109,6 +109,12 @@
             "pages": [
               "infrastructure/configuring-SSL-for-domains"
             ]
+          },
+          {
+            "group": "Security Testing",
+            "pages": [
+              "infrastructure/setting-up-ZAP"
+            ]
           }
         ]
       }

@@ -1,0 +1,67 @@
+We'll use Let's Encrypt to obtain our SSL certificates
+### 1. Install Certbot
+```bash
+sudo apt install certbot python3-certbot-nginx
+```
+
+### 2. Allow SSH connections through the firewall
+Verify our firewall status
+```bash
+sudo ufw status
+```
+The output will look something like this, meaning that only HTTPS traffic is allowed to the web server:
+
+| To               | Action | From          |
+| -----------------|--------|-------------- |
+| Nginx HTTPS      | Allow  | Anywhere      |
+| 5433             | Allow  | Anywhere      |
+| 5433 (v6)        | Allow  | Anywhere (v6) |
+| Nginx HTTPS (v6) | Allow  | Anywhere (v6) |
+
+Allow the Nginx Full profile and delete the redundant Nginx HTTPS profile allowance
+
+```bash
+sudo ufw allow 'Nginx Full'
+sudo ufw delete allow 'Nginx HTTPS'
+```
+Your ufw status should look like this now:
+
+| To               | Action | From          |
+| -----------------|--------|-------------- |
+| Nginx Full       | Allow  | Anywhere      |
+| 5433             | Allow  | Anywhere      |
+| 5433 (v6)        | Allow  | Anywhere (v6) |
+| Nginx Full (v6)  | Allow  | Anywhere (v6) |
+
+### 3. Obtain the SSL Certificates
+The Nginx plugin will take care of reconfiguring Nginx and reloading the config whenever necessary.
+```bash
+certbot --nginx -d <your-unitmaster-domain-here>
+
+# For example
+# certbot --nginx -d unitmaster.wizglobal.co.ke
+```
+
+You will be prompted a series of questions like email address, city etc. Fill them in until your certificate is generated.
+Repeat the command above for the `client portal` and `API` domains as well
+
+After the SSL certificates have been generated. You can verify this by navigating to the projects' respective Nginx configurations.
+For example, for the unitmaster nginx configuration, it will now look something like this
+
+```conf unitmasterv2
+server {
+
+    listen 443 ssl;
+    server_name unitmaster.wizglobal.co.ke;
+    ssl_certificate /etc/letsencrypt/live/unitmaster.wizglobal.co.ke/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/unitmaster.wizglobal.co.ke/privkey.pem; # managed by Certbot
+
+    # ..... the rest of the file continues .....
+```
+Certbot will store the SSL certificates in the `/etc/letsencrypt/live/` directory
+
+You can verify the other Nginx configuration files as well
+
+### 4. Visit your domains
+Test out your results by visiting your domains by using the `https` protocol in the browser i.e `https://unitmaster.wizglobal.co.ke`. 
+You will notice that your site(s) now load with the generated SSL certificates
