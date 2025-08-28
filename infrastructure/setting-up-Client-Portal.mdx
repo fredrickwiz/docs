@@ -1,0 +1,91 @@
+In your virtual machine, as the `root` user, navigate to the `/var/www/html` directory and clone the `Unitmaster` repository
+<Note>
+If the `html` directory is not present, proceed to create one; this will require `root` privilleges
+</Note>
+```bash
+# Switch to the root user
+sudo -i
+
+# Switch to the /var/www directory
+cd /var/www/html
+```
+### 1. Clone the repository
+Clone the unitmaster_portal repository
+```bash
+  git clone <UNITMASTER_PORTAL-REPO-URL-HERE>
+  ```
+Switch to the `new_redesign_ke` branch
+```bash
+git checkout -b new_redesign_ke
+```
+
+### 2. Configure environment variables
+Fill in the variables in the file according to your configurations
+```ENV .env example
+APP_NAME=*************
+APP_ENV=*************
+APP_KEY=*************
+APP_DEBUG=*************
+
+API_URL=*************
+
+APP_CLIENT=*************
+LOGO_NAME=*************
+
+LOG_CHANNEL=*************
+
+BROADCAST_DRIVER=*************
+CACHE_DRIVER=*************
+QUEUE_CONNECTION=*************
+SESSION_DRIVER=*************
+SESSION_LIFETIME=*************
+SESSION_SECURE_COOKIE=*************
+
+REDIS_HOST=*************
+REDIS_PASSWORD=*************
+REDIS_PORT=*************
+
+MAIL_MAILER=*************
+MAIL_HOST=*************
+MAIL_PORT=*************
+MAIL_USERNAME=*************
+MAIL_PASSWORD=*************
+MAIL_ENCRYPTION=*************
+MAIL_FROM_ADDRESS=*************
+MAIL_FROM_NAME="${APP_NAME}"
+
+AWS_ACCESS_KEY_ID=*************
+AWS_SECRET_ACCESS_KEY=*************
+AWS_DEFAULT_REGION=*************
+AWS_BUCKET=*************
+
+PUSHER_APP_ID=*************
+PUSHER_APP_KEY=*************
+PUSHER_APP_SECRET=*************
+PUSHER_APP_CLUSTER=*************
+
+MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+LOG_IN_REDIRECT_URL=*************
+```
+
+### 3. Install project dependencies
+```bash
+composer install --no-scripts
+```
+
+### 4. Verify project directories
+Ensure that the following directories are present in the project
+  - `storage/framework`
+  - `storage/framework/sessions`
+  - `storage/framework/views`
+  - `storage/framework/cache`
+  - `bootstrap/cache`
+
+### 5. Change ownership of the project
+Change the ownership of the project folder to point to the `www-data` user (Nginx)
+```bash
+  chown -R www-data:www-data /path/to/unitmaster-portal-repo
+  
+  # For example
+  # chown -R www-data:www-data /var/www/html/unitmaster_portal
+  ```

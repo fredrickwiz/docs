@@ -1,4 +1,4 @@
-In your virtual machine, as the `root` user, navigate to the `/var/www` directory and clone the `Unitmaster` repository
+In your virtual machine, as the `root` user, navigate to the `/var/www` directory and clone the `unitmaster` repository
 ```bash
 # Switch to the root user
 sudo -i
@@ -6,22 +6,106 @@ sudo -i
 # Switch to the /var/www directory
 cd /var/www
 ```
-<Steps>
-  <Step title="Clone the UnitMaster repository">
-    ```bash
-    git clone <UNITMASTER-REPO-URL-HERE>
-    ```
-  </Step>
-  <Step title="Switch to the develop-laravel-upgrade branch">
-    ```bash
+### 1. Clone the repository
+```bash
+  git clone <UNITMASTER-REPO-URL-HERE>
+```
+  Switch to the `develop-laravel-upgrade` branch
+  ```bash
     git checkout -b develop-laravel-upgrade
     ```
-  </Step>
-  <Step title="Configure the .env file">
-    ```text
+
+### 2. Configure the environment variables
+Create/update the `.env` file at the root of the project. Fill in the variables in the file according to your configurations.
+<Note>
+  With the `.env` file you'll be provided, you'll only need to alter the database credentials for UnitMaster. This depiction below has been entirely redacted for security purposes
+  </Note>
+```ENV .env example
+    # ------- APP VARIABLES ----------
+    APP_NAME=******************************
+    APP_ENV=******************************
+    APP_KEY=******************************
+    APP_DEBUG=******************************
+    APP_URL=******************************
+    DECIMAL_PLACES=******************************
+
+    LOG_CHANNEL=******************************
+
+    #--------- DATABASE VARIABLES -----------
+    DB_CONNECTION=<your-connection-type> i.e pgsql
+    DB_HOST=<your-db-host>
+    DB_PORT=<your-db-port>
+    DB_DATABASE=<your-database-name>
+    DB_SCHEMA=<your-database-schema>
+    DB_USERNAME=<your-database-username>
+    DB_PASSWORD=<your-database-password>
+
+    # -------- AZURE VARIABLES -----------
+    Azure_AD_TENANT_ID=******************************
+    AZURE_AD_CLIENT_ID=******************************
+    AZURE_AD_CLIENT_SECRET=******************************
+    AZURE_AD_REDIRECT_URI=******************************
+    AZURE_EMAIL=******************************
+
+    BROADCAST_DRIVER=******************************
+    CACHE_DRIVER=******************************
+    QUEUE_CONNECTION=******************************
+    QUEUE_DRIVER=******************************
+    SESSION_DRIVER=******************************
+    SESSION_LIFETIME=******************************
+    SESSION_SECURE_COOKIE=******************************
+
+    # -------- REDIS VARIABLES --------------
+    REDIS_HOST=******************************
+    REDIS_PASSWORD=******************************
+    REDIS_PORT=******************************
+
+    # -------- MAIL SERVER VARIABLES ---------
+    MAIL_DRIVER=******************************
+    MAIL_HOST=******************************
+    MAIL_PORT=******************************
+    MAIL_USERNAME=******************************
+    MAIL_PASSWORD=******************************
+    MAIL_ENCRYPTION=******************************
+    MAIL_FROM_ADDRESS=******************************
+    MAIL_FROM_NAME=******************************
+
+    # -------- AWS VARIABLES ----------
+    AWS_ACCESS_KEY_ID=******************************
+    AWS_SECRET_ACCESS_KEY=******************************
+    AWS_DEFAULT_REGION=******************************
+    AWS_BUCKET=******************************
+
+    PUSHER_APP_ID=******************************
+    PUSHER_APP_KEY=******************************
+    PUSHER_APP_SECRET=******************************
+    PUSHER_APP_CLUSTER=******************************
+
+    MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+    MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+    CAPTCHA_KEY=******************************
+    CAPTCHA_SECRET=******************************
     ```
-  </Step>
-</Steps>
+### 3. Install project dependencies
+These dependencies are essential for the project to run as expected
+```bash
+composer install --no-scripts
+```
 
+### 4. Verify project directories
+Ensure that the following directories are present in the project
+  - `storage/framework`
+  - `storage/framework/sessions`
+  - `storage/framework/views`
+  - `storage/framework/cache`
+  - `bootstrap/cache`
 
-
+### 5. Change ownership of the project
+Change the ownership of the project folder to point to the `www-data` user (Nginx)
+```bash
+  chown -R www-data:www-data /path/to/unitmaster_repo
+  
+  # For example
+  # chown -R www-data:www-data /var/www/unitmasterv2
+  ```

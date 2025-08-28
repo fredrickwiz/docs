@@ -1,0 +1,139 @@
+In your virtual machine, as the `root` user, navigate to the `/var/www/html` directory and clone the `unitmaster_client_portal_api` repository
+<Note>
+If the `html` directory is not present, proceed to create one; this will require `root` privilleges
+</Note>
+```bash
+# Switch to the root user
+sudo -i
+
+# Switch to the /var/www directory
+cd /var/www/html
+```
+### 1. Clone the repository
+```bash
+git clone <UNITMASTER-CLIENT-PORTAL-API-REPO-URL-HERE>
+```
+Switch to the `ft-merg-cic-mobile` branch
+```bash
+git checkout -b ft-merge-cic-mobile
+```
+
+### 2. Configure environment variables
+Fill in the variables in the file according to your configurations.
+<Note>
+With the `.env` file you'll be provided, you'll only need to alter the database credentials for Client Portal API. This depiction below has been entirely redacted for security purposes
+</Note>
+``` ENV .env example
+APP_URL=************
+NODE_ENV=************
+
+EMAIL_USER=************
+EMAIL_PASSWORD=************
+EMAIL_HOST=************
+MAIL_FROM_NAME=************
+
+API_URL=************
+CALLBACK=************
+
+UPLOAD_DIR=************
+DB_CONNECTION=************
+DB_USER=************
+DB_HOST=************
+DB_NAME=************
+DB_PASSWORD=************
+DB_PORT=************
+DB_SCHEMA=************
+
+APP_TYPE=************
+SEND_SMS=************
+SMS_SENDER_NAME=************
+SMS_API=************
+ENVIRONMENT=************
+NODE_ENV=************
+EMAIL_API=************
+COUNTRY_CODE=************
+PASSWORD_REQUEST=************
+
+APP_CLIENT=************
+
+CRYPTO_SECRET=************
+TOKEN_SECRET=************
+PORT=************
+```
+
+### 3. Edit the docker-compose.yaml file
+Edit the present 'docker-compose.yaml' file to include the 'network' parameter
+```YAML docker-compose.yaml
+....
+build:
+    context: .
+    network: host # --> Newly added
+ports:
+....
+```
+
+### 4. Start the API service
+Start the API service using Docker Compose in a detached mode
+```bash
+cd unitmaster_client_portal_api
+docker-compose up -d
+```
+
+Verify that the service is running as expected
+```bash
+docker ps -a
+```
+
+You should see an output similar to the one below
+![Docker API Service running](../images/infrastructure/docker-api-service-running.png)
+
+### 5. Update UFW rules
+We'll have to update the UFW rules to allow the API container to connect to the database
+- Get the Docker Container IP Address
+```bash
+  # List the available Docker networks
+  docker network ls
+
+  # You should see a number of networks, among them one with the name unitmaster_client_portal_api...
+  # Inspect it using the following command
+  docker network inspect unitmaster_client_portal_api
+```
+  You will get an output from the command containing the network details. Scroll to the bottom at the `Containers` section, find our container by its name
+  and note down its `IPv4Address`
+  ![Container IP Address](../images/infrastructure/docker-network-inspect-ip.png)
+
+- Update UFW rules to allow Container IP to connect to the database
+```bash
+ufw allow from <API-Container-IP-Address> to any port <Port-Number> proto <Protocol>
+
+# For example
+# ufw allow from 192.168.1.1 to any port 1234 proto tcp
+```
+
+- Verify the UFW changes
+```bash
+ufw status
+```
+You should see the new rule that was just added
+
+### 5. Change ownership to the project
+Grant the necessary permissions on the project folder. 
+Change the ownership of the project folder to point to the `www-data` user (Nginx)
+  ```bash
+  chown -R www-data:www-data /path/to/unitmaster-client-portal-api-repo
+
+  # For example
+  # chown -R www-data:www-data /var/www/html/unitmaster_client_portal_api
+  ```
+
+### 6. Test the API Service
+```bash
+  curl localhost:<PORT_NUMBER>/api/health_check
+
+  # For example
+  # curl localhost:5000/api/health_check
+  ```
+  <Check>
+  You should see the following output printed out in the terminal:
+  `{"success":true,"message":"API is running"}`
+  </Check>

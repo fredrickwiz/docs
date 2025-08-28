@@ -91,7 +91,23 @@
             "group": "Project Implementation",
             "pages": [
               "infrastructure/configuring-the-database",
-              "infrastructure/setting-up-UnitMaster"
+              "infrastructure/setting-up-UnitMaster",
+              "infrastructure/setting-up-Client-Portal",
+              "infrastructure/setting-up-Client-Portal-API"
+            ]
+          },
+          {
+            "group": "Nginx Configurations - Project Level",
+            "pages": [
+              "infrastructure/nginx-for-UnitMaster",
+              "infrastructure/nginx-for-Client-Portal",
+              "infrastructure/nginx-for-Client-Portal-API"
+            ]
+          },
+          {
+            "group": "SSL Configurations - Project Level",
+            "pages": [
+              "infrastructure/ssl-configurations-project"
             ]
           }
         ]

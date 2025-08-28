@@ -1,4 +1,5 @@
 ### 
+### 1. Copy the backup SQL data file
 Switch to the root user
 ```bash
 sudo -i
@@ -28,6 +29,7 @@ ls -lh
 The output should be similar to the image below
 ![SQL File ownership changes](/images/infrastructure/backup-sql-ownership.png)
 
+### 2. Create the database
 Switch to the postgres user to create your database
 ```bash
 sudo -i -u postgres
@@ -49,6 +51,7 @@ Verify the database was created
 # You can use \q to exit the window showing you the list of databases
 ```
 
+### 3. Import the data into the database
 Import the sql file from the backup file
 Exit the psql shell by executing `\q` and proceed to run the following command.
 ```bash

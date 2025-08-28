@@ -1,0 +1,82 @@
+In your virtual machine, as the `root` user, navigate to the `/etc/nginx/sites-available`
+```bash
+# Switch to the root user
+sudo -i
+
+# Switch to the /var/www directory
+cd /etc/nginx/sites-available
+```
+
+### 1. Create the UnitMaster Client Portal conf file
+```bash
+nano unitmaster_client_portal
+```
+Inside it, add the following content
+```conf unitmaster_client_portal
+server {
+    listen 443;
+    server_name client-portal.wizglobal.co.ke; # Replace with your domain
+
+    root /var/www/html/unitmaster_portal/public; # The path to the public folder in your project
+    
+    index index.html index.htm index.php;
+    
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {        
+	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock; # This references PHP v7.4 that this project uses
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+```
+### 2. Verify the Nginx configurations
+```bash
+nginx -t
+```
+You should see the following output printed out in the terminal
+```bash
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+### 3. Create a symlink
+Create a symlink to the configuration file
+```bash
+sudo ln -s /etc/nginx/sites-available/unitmaster_client_portal /etc/nginx/sites-enabled/
+```
+
+### 4. Verify the symlink
+```bash
+ls -l /etc/nginx/sites-enabled/
+```
+You should see something similar to this:
+```bash
+lrwxrwxrwx 1 root root 39 Aug 15 14:57 unitmaster_client_portal -> /etc/nginx/sites-available/unitmaster_client_portal
+```
+
+### 5. Restart the Nginx service
+```bash
+sudo systemctl restart nginx
+```
+
+### 6. Verify Nginx is working correctly
+```bash
+sudo systemctl status nginx
+```
+You should see an output similar to this:
+![Nginx running](../images/infrastructure/nginx-running.png)
