@@ -7,26 +7,35 @@ sudo -i
 cd /etc/nginx/sites-available
 ```
 
-### 1. Create the UnitMaster Client Portal conf file
+### 1. Create the UnitMaster conf file
 ```bash
-nano unitmaster_client_portal_api
+nano unitmasterv2
 ```
 Inside it, add the following content
-```conf unitmaster_client_portal_api
+```conf Expandable unitmasterv2
 server {
-    listen 443;
-    server_name api.wizglobal.co.ke; # Replace with your domain
+    listen 443 ssl;
+    server_name unitmaster.wizglobal.co.ke; # Replace with your domain
 
+    root /var/www/unitmasterv2/public; # Your path to the public folder in your project
+
+    index index.html index.htm index.php;
+    
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
     ssl_prefer_server_ciphers on;
     
+    charset utf-8;
+
     location / {
-        proxy_pass http://<IP_ADDRESS>:<PORT_NUMBER>; # Replace with the server IP Address and port number running the API
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+	include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock; # This references PHP v8.2 that this project uses
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
     }
 }
 ```
@@ -43,7 +52,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ### 3. Create a symlink
 Create a symlink to the configuration file
 ```bash
-sudo ln -s /etc/nginx/sites-available/unitmaster_client_portal_api /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/unitmasterv2 /etc/nginx/sites-enabled/
 ```
 
 ### 4. Verify the symlink
@@ -52,7 +61,7 @@ ls -l /etc/nginx/sites-enabled/
 ```
 You should see something similar to this:
 ```bash
-lrwxrwxrwx 1 root root 39 Aug 15 14:57 unitmaster_client_portal_api -> /etc/nginx/sites-available/unitmaster_client_portal_api
+lrwxrwxrwx 1 root root 39 Aug 15 14:57 unitmasterv2 -> /etc/nginx/sites-available/unitmasterv2
 ```
 
 ### 5. Restart the Nginx service
@@ -65,4 +74,4 @@ sudo systemctl restart nginx
 sudo systemctl status nginx
 ```
 You should see an output similar to this:
-![Nginx running](../images/infrastructure/nginx-running.png)
+![Nginx running](../images/nginx-running.png)

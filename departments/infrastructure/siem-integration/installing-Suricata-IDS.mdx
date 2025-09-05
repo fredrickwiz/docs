@@ -1,0 +1,87 @@
+## Getting started with Suricata
+Suricata is a powerful open-source Intrusion Detection and Prevention System (IDS/IPS) that can
+help you secure your system.
+
+### 1. Update packages index
+```bash
+sudo apt update && sudo apt upgrade
+```
+
+### 2. Install Suricata
+```bash
+sudo apt install suricata
+```
+
+### 3. Configure Suricata
+After the installation is finished, we must configure Suricata to meet our needs. Suricata's main configuration file is found at `/etc/suricata/suricata.yaml`:
+```bash
+sudo nano /etc/suricata/suricata.yaml
+```
+
+### 4. Enable Network Interfaces
+uricata by default doesn't monitor any network interfaces and needs to know which interfaces to analyze. Look in the configuration file for the af-packet section. 
+Uncomment the interface line and enter the name of the network interface Suricata should monitor. For example:
+```bash
+af-packet:
+  - interface: eth0
+```
+
+Suricata will monitor the network interface `eth0` in this example. Save your changes and close the text editor
+
+### 5. Start Suricata on Ubuntu
+```bash
+sudo suricata -c /etc/suricata/suricata.yaml -i interface
+```
+
+Replace `interface` with the name of the interface you created in the previous step. This command starts Suricat with the specified configuration file and network interface.
+
+
+### Troubleshooting Suricata
+If you will encounter the following warning message:
+```bash
+22/6/2023 — 10:04:31 - This is Suricata version 6.0.4 RELEASE running in SYSTEM mode
+22/6/2023 — 10:04:31 - [ERRCODE: SC_ERR_NO_RULES(42)] - No rule files match the pattern /etc/suricata/rules/suricata.rules
+22/6/2023 — 10:04:31 - [ERRCODE: SC_ERR_NO_RULES_LOADED(43)] - 1 rule files specified, but no rules were loaded!
+22/6/2023 — 10:04:31 - all 4 packet processing threads, 4 management threads initialized, engine started
+```
+Follow these steps:
+- Step 1: Run the following command to update Suricata:
+  ```bash
+  suricata-update
+  ```
+
+- Step 2. Open `/etc/suricata/suricata.yaml` and configure default-rule path option like below:
+  ```yaml suricata.yaml
+  default-rule-path: /var/lib/suricata/rules
+  rule-files:
+    suricata.rules
+  ```
+
+### 6. Suricata startup automation
+We will create a systemd service unit to have Suricata start automatically when your Ubuntu system boots up. To make a new service file, use the following command:
+```bash
+sudo nano /etc/systemd/system/suricata.service
+```
+
+In the service file, add the following lines
+```conf suricata.service
+[Unit]
+Description=Suricata IDS/IPS
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/suricata -c /etc/suricata/suricata.yaml -i eth0
+
+[Install]
+WantedBy=default.target
+```
+
+Make sure to change `eth0` with your network interface. Exit the text editor and save the file.
+Then, to enable and start the Suricata service, run the following commands:
+
+```bash
+sudo systemctl enable suricata.service
+sudo systemctl start suricata.service
+```
+
+Suricata will be configured to start automatically every time your system boots using these commands.

@@ -3,11 +3,11 @@
   "theme": "mint",
   "name": "WizGlobal Official Internal Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#07C983",
+    "light": "#00ACFF",
+    "dark": "#07C983"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.ico",
   "navigation": {
     "tabs": [
       {
@@ -27,7 +27,7 @@
           {
             "group": "Introduction",
             "pages": [
-              "unitmaster/introduction"
+              "departments/unitmaster/introduction"
             ]
           }
         ]
@@ -38,7 +38,7 @@
           {
             "group": "Introduction",
             "pages": [
-              "client-portal/introduction"
+              "departments/client-portal/introduction"
             ]
           }
         ]
@@ -49,7 +49,7 @@
           {
             "group": "Introduction",
             "pages": [
-              "api/introduction"
+              "departments/api/introduction"
             ]
           }
         ]
@@ -60,60 +60,75 @@
           {
             "group": "Setting up a virtual machine",
             "pages": [
-              "infrastructure/introduction"
+              "departments/infrastructure/introduction"
             ]
           },
           {
             "group": "Hardening Virtual Machines",
             "pages": [
-              "infrastructure/hardening-virtual-machines",
-              "infrastructure/enabling-Livepatch",
-              "infrastructure/enabling-CIS-Compliance"
+              "departments/infrastructure/hardening-virtual-machines/hardening-virtual-machines",
+              "departments/infrastructure/hardening-virtual-machines/enabling-Livepatch",
+              "departments/infrastructure/hardening-virtual-machines/enabling-CIS-Compliance"
             ]
           },
           {
             "group": "Configuring firewall rules",
             "pages": [
-              "infrastructure/setting-up-ufw-ports"
+              "departments/infrastructure/configuring-firewall-rules/setting-up-ufw-ports"
             ]
           },
           {
             "group": "Installing System-wide Dependencies",
             "pages": [
-              "infrastructure/setting-up-PostgreSQL",
-              "infrastructure/setting-up-Nginx",
-              "infrastructure/setting-up-Docker",
-              "infrastructure/installing-PHP",
-              "infrastructure/installing-Composer"
+              "departments/infrastructure/installing-system-wide-dependencies/setting-up-PostgreSQL",
+              "departments/infrastructure/installing-system-wide-dependencies/setting-up-Nginx",
+              "departments/infrastructure/installing-system-wide-dependencies/setting-up-Docker",
+              "departments/infrastructure/installing-system-wide-dependencies/installing-PHP",
+              "departments/infrastructure/installing-system-wide-dependencies/installing-Composer"
             ]
           },
           {
             "group": "Project Implementation",
             "pages": [
-              "infrastructure/configuring-the-database",
-              "infrastructure/setting-up-UnitMaster",
-              "infrastructure/setting-up-Client-Portal",
-              "infrastructure/setting-up-Client-Portal-API"
+              "departments/infrastructure/project-implementation/configuring-the-database",
+              "departments/infrastructure/project-implementation/setting-up-UnitMaster",
+              "departments/infrastructure/project-implementation/setting-up-Client-Portal",
+              "departments/infrastructure/project-implementation/setting-up-Client-Portal-API"
             ]
           },
           {
             "group": "Nginx Configurations - Project Level",
             "pages": [
-              "infrastructure/nginx-for-UnitMaster",
-              "infrastructure/nginx-for-Client-Portal",
-              "infrastructure/nginx-for-Client-Portal-API"
+              "departments/infrastructure/nginx-configurations-project-level/nginx-for-UnitMaster",
+              "departments/infrastructure/nginx-configurations-project-level/nginx-for-Client-Portal",
+              "departments/infrastructure/nginx-configurations-project-level/nginx-for-Client-Portal-API"
             ]
           },
           {
             "group": "SSL Configurations - Project Level",
             "pages": [
-              "infrastructure/configuring-SSL-for-domains"
+              "departments/infrastructure/ssl-configurations-project-level/configuring-SSL-for-domains"
             ]
           },
           {
             "group": "Security Testing",
             "pages": [
-              "infrastructure/setting-up-ZAP"
+              "departments/infrastructure/security-testing/setting-up-ZAP",
+              "departments/infrastructure/security-testing/testing-domains"
+            ]
+          },
+          {
+            "group": "SIEM Integration",
+            "pages": [
+              "departments/infrastructure/siem-integration/installing-Elasticsearch-Kibana",
+              "departments/infrastructure/siem-integration/installing-Filebeat",
+              "departments/infrastructure/siem-integration/installing-Suricata-IDS"
+            ]
+          },
+          {
+            "group": "Database Backups",
+            "pages": [
+              "departments/infrastructure/database-backups/database-backups"
             ]
           }
         ]
@@ -130,12 +145,7 @@
         "label": "Support",
         "href": "mailto:info@wizglobal.co.ke"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Website",
-      "href": "https://wizglobal.co.ke"
-    }
+    ]
   },
   "contextual": {
     "options": [
@@ -148,12 +158,5 @@
      "cursor",
      "vscode"
    ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
   }
 }

@@ -1,0 +1,52 @@
+---
+title: "Installing Elasticsearch & Kibana"
+---
+
+### 1. Install Elasticsearch
+Depending on your setup, proceed to the Elastic's [Official site](https://www.elastic.co/docs/deploy-manage/) to install Elasticsearch.
+- For example, if you want to deploy a self-managed version of Elasticsearch in Ubuntu, you can install it with a debian package.
+    - [Install Elasticsearch with a Debian package](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/install-elasticsearch-with-debian-package)
+
+Once Elasticsearch is done installing, you will notice the output in your terminal looking something like this:
+```bash
+.....
+Authentication and authorization are enabled.
+TLS for the transport and HTTP layers is enabled and configured.
+
+The generated password for the elastic built-in superuser is : ABCD1234568lrif
+
+If this node should join an existing cluster, you can reconfigure this with
+'/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token <token-here>'
+after creating an enrollment token on your existing cluster.
+
+You can complete the following actions at any time:
+
+Reset the password of the elastic built-in superuser with 
+'/usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic'.
+
+Generate an enrollment token for Kibana instances with 
+ '/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana'.
+
+Generate an enrollment token for Elasticsearch nodes with 
+'/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node'.
+```
+<Note>
+Take note of the `elastic` built-in superuser password generated, you will use this later. You will also notice other commands listed in the output that can be of use down the line
+</Note>
+
+
+### 2. Configure Elasticsearch
+Configure Elasticsearch using these [Official instructions](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/install-elasticsearch-with-debian-package#first-node)
+
+
+### 3. Install Kibana
+Depending on your setup, proceed to the Elastic's [Official site](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/install-kibana) to install Kibana.
+<Tip>
+Make sure you have Elasticsearch installed first and it's up and running
+</Tip>
+- For example, if you want to Kibana in Ubuntu, you can install it with a debian package.
+    - [Install Kibana with a Debian package](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/install-kibana-with-debian-package)
+
+
+### 4. Configure Kibana
+Configure Kibana using these [Official instructions](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/configure-kibana)

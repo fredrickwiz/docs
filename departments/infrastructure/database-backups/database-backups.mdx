@@ -1,0 +1,108 @@
+## Getting started
+Make sure the user that you plan to create backups with can execute the `pg_dump` command
+If your current user is unable to do so:
+
+### 1. Create a PostgreSQL role
+Create a role that matches your current computer user:
+- Switch to the `postgres` user and get into the `psql` shell:
+
+```bash
+# ubuntu@WorkPC:~$ sudo -i -u postgres
+sudo -i -u posgres
+
+# Switch to the psql shell
+#postgres@WorkPC:~$ psql
+psql
+
+# Proceed to create a role with SUPERUSER PRIVILLEGES
+
+# psql (17.6 (Ubuntu 17.6-1.pgdg24.04+1))
+# Type "help" for help.
+# postgres=# CREATE ROLE ubuntu WITH SUPERUSER LOGIN PASSWORD '1234567$';
+CREATE ROLE <role_name_here> WITH SUPERUSER LOGIN PASSWORD '<password_here>';
+```
+
+### 2. Create a GPG Key
+GPG (GNU Privacy Guard) os a free, open-source software suite for encrypting and signing data and communications
+We'll be creating and using a GPG key to encrypt/decrypt our database backups
+
+- Generate a GPG key pair (if you don't have one):
+```bash
+gpg --full-generate-key
+```
+Follow the prompts to create your key
+
+- Export the public key; this will be good for sharing for decryption
+```bash
+gpg --export -a "Your Name" > public_key.asc
+```
+
+### 3. Create a .pgpass file
+This file holds the credentials that `pg_dump` will use during the execution. Create
+a `.pgpass` file in the home directory of the user you're working with.
+Normally, when executing a `pg_dump` command, we'll be prompted for a password in the terminal. 
+The `.pgpass` will enable `pg_dump` to pickup the credentials automatically without prompting us
+
+```bash .pgpass
+# Remove these comment lines when copying this block
+# It should follow this order
+# host:port:db_name:user_password
+# i.e 
+localhost:1234:mydb:myuser:mypassword
+```
+
+### 4. Create an executable bash script
+This is the script that we'll execute to create our backups
+```bash db_backup_script.sh
+#!/bin/bash
+
+# Create a date time variable that will be used for our file names
+date_time=$(date +"%Y-%m-%d_%H-%M-%S")
+
+# Perform the backup and encrypt with GPG
+/usr/bin/pg_dump <DB_NAME_HERE> | gpg --encrypt --recipient "YOUR_GPG_KEY_NAME_HERE" > /path/to/your/backup/location/${date_time}_<DB_NAME_HERE>.sql.gpg
+```
+
+- Make the bash script executable
+```bash
+chmod +x db_backup_script.sh
+```
+
+### 5. Create a Cron Job
+We'll create a Cron Job that will execute our script at a certain interval
+
+- Open Cron tab and edit it using your favorite editor i.e nano etc
+```bash
+crontab -e
+```
+
+At the bottom of the file, you can add your cronjob entry; by referencing the bash script and the time interval
+```bash
+# For example
+# */5 * * * * /path/to/the/bash_script.sh
+
+# The above will run every 5 minutes
+```
+You can list the cron jobs available in the system:
+```bash
+crontab -l
+```
+You can use [this site](https://crontab.guru/) to create your own intervals to use in cron jobs.
+
+### 6. (Optional) Restore the encrypted backup
+- Decrypting your backup
+In case you'd want to decrypt your backups, you can use the following command:
+```bash
+gpg --decrypt your_database_backup.sql.gpg > your_database_backup.sql
+```
+**You will be prompted for the passphrase of the GPG key used for encryption.**
+
+- Import the data back
+Ensure the target database exists or create it before restoring
+```bash
+psql -U your_username -d your_database_name < your_database_backup.sql
+```
+<Check>
+You will have successfully created a cron job to create database backups at your desired location
+</Check>
+

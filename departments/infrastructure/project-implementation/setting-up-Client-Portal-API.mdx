@@ -23,7 +23,7 @@ Fill in the variables in the file according to your configurations.
 <Note>
 With the `.env` file you'll be provided, you'll only need to alter the database credentials for Client Portal API. This depiction below has been entirely redacted for security purposes
 </Note>
-``` ENV .env example
+``` ENV Expandable .env_example
 APP_URL=************
 NODE_ENV=************
 
@@ -63,7 +63,7 @@ PORT=************
 
 ### 3. Edit the docker-compose.yaml file
 Edit the present 'docker-compose.yaml' file to include the 'network' parameter
-```YAML docker-compose.yaml
+```YAML docker-compose.yaml highlight={4}
 ....
 build:
     context: .
@@ -85,7 +85,7 @@ docker ps -a
 ```
 
 You should see an output similar to the one below
-![Docker API Service running](../images/infrastructure/docker-api-service-running.png)
+![Docker API Service running](../images/docker-api-service-running.png)
 
 ### 5. Update UFW rules
 We'll have to update the UFW rules to allow the API container to connect to the database
@@ -100,7 +100,7 @@ We'll have to update the UFW rules to allow the API container to connect to the 
 ```
   You will get an output from the command containing the network details. Scroll to the bottom at the `Containers` section, find our container by its name
   and note down its `IPv4Address`
-  ![Container IP Address](../images/infrastructure/docker-network-inspect-ip.png)
+  ![Container IP Address](../images/docker-network-inspect-ip.png)
 
 - Update UFW rules to allow Container IP to connect to the database
 ```bash

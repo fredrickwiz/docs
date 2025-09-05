@@ -48,7 +48,7 @@ Repeat the command above for the `client portal` and `API` domains as well
 After the SSL certificates have been generated. You can verify this by navigating to the projects' respective Nginx configurations.
 For example, for the unitmaster nginx configuration, it will now look something like this
 
-```conf unitmasterv2
+```conf unitmasterv2 highlight={5,6}
 server {
 
     listen 443 ssl;
