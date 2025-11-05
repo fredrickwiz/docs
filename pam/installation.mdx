@@ -1,0 +1,104 @@
+## Installing Mamori PAM
+Navigate to [Mamori's Official Guide](https://doc.mamori.io/050-installation/install/) for the upto date installation process.
+
+The VM server where you'll install the PAM system should have the following specs:
+![PAM Server requirements](/images/pam/pam-server-requirements.png)
+
+## Configure UFW
+```bash
+sudo ufw allow 443 comment "https"
+sudo ufw allow 22 comment "ssh"
+sudo ufw enable
+sudo ufw status
+```
+
+## IP Access (Wireguard)
+```bash
+sudo ufw allow 51871/udp comment "wireguard port"
+sudo ufw allow from 172.0.0.0/16  comment "Your virtual wireguard network"
+sudo ufw enable
+sudo ufw status
+```
+
+## Proxy Ports - Ports required by database and HTTP/S Proxy
+```bash
+sudo ufw allow 1122 comment "SSH Proxy"
+sudo ufw allow 5432 comment "Postgres Proxy"
+#sudo ufw allow 1433 comment "MSSQL Proxy"
+#sudo ufw allow 3306 comment "MySQL Proxy"
+#sudo ufw allow 1521 comment "Oracle Proxy"
+#sudo ufw allow 28017 comment "Mongo Proxy"
+sudo ufw allow 8089 comment "HTTP/S Proxy"
+sudo ufw allow 1527 comment "Mamori JDBC"
+sudo ufw enable
+sudo ufw status
+```
+
+## Install Docker
+<Note>Do NOT install Docker using Ubuntu Snap</Note>
+Visit [Docker's Official Guide](https://docs.docker.com/engine/install/ubuntu/) to install Docker
+
+## Set the server timezone
+Check and set your server timezone to your local timezone name
+**Note**: The value of `/etc/timezone` must be set
+
+```bash
+#list timezones
+timedatectl list-timezones
+#
+#set the timezones
+sudo timedatectl set-timezone Australia/Melbourne
+echo 'Australia/Melbourne' > /etc/timezone
+#
+#check /etc/timezone
+timedatectl
+cat /etc/timezone
+```
+
+## Add Swap
+If the server doesn't already have a swap memory file, then add 4GB. This must be run as sudo.
+
+```bash
+sudo bash
+fallocate -l 4G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+exit
+```
+
+## Install statement
+```bash
+#!/bin/bash
+
+sudo docker pull iomamori/mamori-all-in-one:latest
+sudo docker create \
+        --network host \
+        --restart always \
+        --privileged \
+        --log-opt max-size=10m --log-opt max-file=10 \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v mamori-var:/opt/mamori/var \
+        -v mamori-nginx-conf:/etc/nginx \
+        -v mamori-data:/var/lib/postgresql \
+        -v mamori-pg-conf:/etc/postgresql \
+        -v mamori-influxdb:/opt/mamori/influxdb \
+        -v mamori-influxdb-data:/var/lib/influxdb \
+        -v mamori-grafana:/opt/mamori/grafana \
+        -v /proc:/host/proc:ro \
+        -e TZ=`cat /etc/timezone` \
+        --name mamori iomamori/mamori-all-in-one:latest /sbin/my_init
+
+sudo docker start mamori
+```
+
+## Navigate to the server IP address to access the Mamori PAM server page
+![Mamori PAM Landing page](/images/pam/mamori-pam-landing-page.png)
+
+## Logging into your Mamori PAM account
+1. Visit the URL you use to access Mamori PAM service
+![Login window to Mamori PAM service](/images/pam/login.png)
+
+2. Login using your credentials. If using an IdP, login with your IdP credentials. When prompted for 2FA, accept the request on the authorized device.
+![Mamori 2FA prompt on authorized device](/images/pam/mamori_2fa_prompt.jpg)

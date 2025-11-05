@@ -1,0 +1,26 @@
+---
+title: "SSH Logins"
+# description: "Welcome to the WizGlobal PAM documentation"
+---
+
+# Add SSH Login resources
+- In the Mamori PAM interface, navigate to the **SSH Logins** page by using the option in the navigation menu.
+- At the top left of this page, click on the `+` icon to add a new SSH Login resource.
+![Adding SSH Login resource](/images/pam/add-ssh-resources.png)
+
+- This will open a pop up window with fields that you can fill in to add the SSH Login resource of your choice
+![Pop up window to add SSH Login Resource](/images/pam/add-ssh-resource-popup-window.png)
+
+**NOTE** - In the `Remote Server Authentication Method` field, click on that section to expand the dropdown and select `Login prompt` as the option to use when adding the SSH Logins
+
+After you're done with filling in the options, click on `Save` and your SSH Login resources will be listed on that page.
+![Listed SSH Login resources](/images/pam/listed-ssh-login-resources.png)
+
+<Note>The **Superuser** or the **Administrator** can then grant you access to the SSH Login resources.</Note>
+
+## Login to your Mamori PAM Service Account and naviage to SSH Logins on the navigation bar
+![SSH Logins window in Mamori PAM service](/images/pam/ssh-logins-pam-page.png)
+
+From the image above, this page will list the servers/instances that you can SSH into them.
+For example, in the image above, there's a Test Server listed. For you to SSH into it, click on the `desktop` icon on the far right of that row.
+This will prompt a 2FA request from your mobile device. You can proceed to accept the request for the login process to continue.

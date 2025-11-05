@@ -1,0 +1,42 @@
+## Setting up Stunnel
+In your server terminal, proceed to update the system packages and install Stunnel
+
+```bash
+sudo apt update
+sudo apt install stunnel4 -y
+```
+
+Proceed to enable `stunnel4` to start automatically by opening the `/etc/default/stunnel4` file with a text editor,
+such as `nano`
+Change/add the line `ENABLED=1`
+
+Create the `stunnel` configuration file at `/etc/stunnel/google-ldap.conf` and add the following:
+```conf
+debug = 7
+output = /var/log/stunnel4/stunnel_wiz.log
+
+[ldap]
+client = yes
+accept = 127.0.0.1:1636
+connect = ldap.google.com:636
+cert = /var/google-ldap.crt
+key = /var/google-ldap.key
+CAfile = /var/google-ldap-ca.pem
+verifyChain = yes
+checkHost = ldap.google.com
+OCSPaia = yes
+```
+Save and close the file.
+
+Proceed to add the Google provided certificates to the desired locations as stated in the stunnel conf file and provide them with the necessary permissions.
+Enable stunnel by running `systemctl enable stunnel4`
+Start the stunnel service by running `systemctl start stunnel4`
+Check the status of the stunnel service `systemctl status stunnel4`
+
+
+## Setting up Google Secure LDAP
+Log into your PAM superuser account and navigate to the Server Settings menu option in the Navigation menu
+
+Under **General**, input the Public IP Address or Name with the necessary IP address/domain name
+
+Under **Authentication Providers**, this is where we'll set up our LDAP configurations

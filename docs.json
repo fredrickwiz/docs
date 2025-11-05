@@ -132,6 +132,21 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "PAM Docs",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "pam/installation",
+              "pam/adding-TLS-certificates",
+              "pam/setting-up-LDAP",
+              "pam/ssh-logins",
+              "pam/setting-up-Wireguard"
+            ]
+          }
+        ]
       }
     ]
   },
