@@ -100,7 +100,7 @@ gpg --decrypt your_database_backup.sql.gpg > your_database_backup.sql
 - Import the data back
 Ensure the target database exists or create it before restoring
 ```bash
-psql -U your_username -d your_database_name < your_database_backup.sql
+pg_restore -U your_username -d your_database_name < your_database_backup.sql
 ```
 <Check>
 You will have successfully created a cron job to create database backups at your desired location
