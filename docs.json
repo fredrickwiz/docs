@@ -21,39 +21,7 @@
           }
         ]
       },
-      {
-        "tab": "UnitMaster",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "departments/unitmaster/introduction"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Client Portal",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "departments/client-portal/introduction"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Docs",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "departments/api/introduction"
-            ]
-          }
-        ]
-      },
+      
       {
         "tab": "Infrastructure",
         "groups": [
@@ -145,7 +113,12 @@
               "pam/ssh-logins",
               "pam/setting-up-Wireguard"
             ]
-          }
+          },
+          {
+            "group": "PAM: Remote Access to Database Resources",
+            "pages": [
+              "pam/remote-database-access/getting-started"
+            ]}
         ]
       }
     ]

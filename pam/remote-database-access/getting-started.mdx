@@ -1,0 +1,27 @@
+### Getting started with PAM: Remote Access to Database Resources
+This guide will walk you through the steps to set up remote access to your database resources using PAM
+
+### Prereqiuisites
+Before we get started, make sure you have the following:
+
+1. Get the database connection details i.e the Database Resource name and port being used
+2. Your LDAP credentials that have access to the database resource
+3. The IP address of the PAM server to be used for remote access
+
+### In your DBeaver client
+1. Open DBeaver and click on the "New Database Connection" button
+2. Select the database type you want to connect to (e.g., PostgreSQL etc.)
+3. In the connection settings, enter the following details:
+   - Host: The IP address of the PAM server
+   - Port: The port number being used by the database resource
+   - Database: The name of the database resource you want to access
+   - Username: Your LDAP (Google) username
+   - Password: Your LDAP (Google) password
+
+![DBeaver connection to Database resource](/images/pam/DBeaver-connection-pam.png)
+
+4. Test the connection to ensure that everything is set up correctly
+5. Check the Mamori app on your phone to approve the connection request
+![Approve connection request on Mamori app](/images/pam/pam-accept-connection-request-for-resource.jpg)
+6. Once approved, you should be able to access your database resources remotely through DBeaver
+![Successful connection to database resource](/images/pam/pam-approved-connection-to-resource.png)
