@@ -120,6 +120,17 @@
               "pam/remote-database-access/getting-started"
             ]}
         ]
+      },
+      {
+        "tab": "PAM Active Datasources",
+        "groups": [
+          {
+            "group": "Active Datasources",
+            "pages": [
+              "pam/active-datasources"
+            ]
+          }
+        ]
       }
     ]
   },
